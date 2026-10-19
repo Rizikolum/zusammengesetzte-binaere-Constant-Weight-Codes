@@ -222,7 +222,7 @@ $tmp = ''
 while ($received.length -ge ($m*$k)) {
     $tmp = $received.substring(0,$m*$k)
     if ($interleave) {
-        $tmp = .\unwrangle.ps1 -wi $tmp -k $k
+        $tmp = .\disinterleave.ps1 -wi $tmp -k $k
         $unwrangled += $tmp
     }
     $decode = decode_data $tmp

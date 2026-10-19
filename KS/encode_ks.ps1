@@ -1,6 +1,6 @@
 ﻿param (
     [string]$content = "010010000110010101101100011011000110111100100000010101110110111101110010011011000110010000100001",
-    [string]$table = '.\lookup_tables\lookup_table_A(30,12,15).csv'
+    [string]$table = '.\lookup_tables\lookup_table_A(9,4,6).csv'
     )
 
 $lookup_table = Import-Csv -Path "$table" -Delimiter ';'

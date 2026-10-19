@@ -6,7 +6,7 @@
     [double]$p_bg = 0.2,
     [double]$b_err = 0,
     [double]$del = 0,
-    [string] $table = '.\lookup_tables\lookup_table_A(10,4,6).csv',
+    [string] $table = '.\lookup_tables\lookup_table_A(9,4,6).csv',
     [boolean] $interleave = $true,
     [PSCustomObject] $encoded = ''
     )
@@ -20,10 +20,10 @@ if ($interleave) { $interleaved = .\interleave.ps1 -c $encoded.encoded -m $encod
 } else { $interleaved = $encoded.encoded }
 
 #CHANNEL
-$received = .\transfer.ps1 -in $interleaved -errorrate $errorrate -seed $seed -p_gb $p_gb -p_bg $p_bg -b_err $b_err -del $del
+$received = .\channel.ps1 -in $interleaved -errorrate $errorrate -seed $seed -p_gb $p_gb -p_bg $p_bg -b_err $b_err -del $del
 
 #DEINTERLEAVER
-if ($interleave) { $transfer = .\unwrangle.ps1 -wi $received.transfer -k $encoded.subwords } 
+if ($interleave) { $transfer = .\disinterleave.ps1 -wi $received.transfer -k $encoded.subwords } 
 else { $transfer = $received.transfer }
 
 #DECODER

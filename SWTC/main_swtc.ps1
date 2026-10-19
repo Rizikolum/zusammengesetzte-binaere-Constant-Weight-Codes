@@ -6,9 +6,9 @@
     [double]$p_bg = 0.2,
     [double]$b_err = 0,
     [double]$del = 0,
-    [string] $table = '.\lookup_tables\lookup_table_A(10,4,6).csv',
-    [string] $table_0 = '.\lookup_tables\lookup_table_A(20,10,8).csv',
-    [string] $table_1 = '.\lookup_tables\lookup_table_A(20,10,12).csv',
+    [string] $table = '.\lookup_tables\lookup_table_A(9,4,6).csv',
+    [string] $table_0 = '.\lookup_tables\lookup_table_A(9,4,3).csv',
+    [string] $table_1 = '.\lookup_tables\lookup_table_A(9,4,6).csv',
     [boolean] $interleave = $true,
     [PSCustomObject] $encoded = ''
     )
@@ -20,7 +20,7 @@ if ($encoded -eq '') { $encoded = .\SWTC\\encode_swtc.ps1 -content $msgcontent -
 if ($interleave) { $message_enc = $encoded.interleaved } else { $message_enc = $encode.encoded }
 
 #CHANNEL
-$received = .\transfer.ps1 -in $message_enc -errorrate $errorrate -seed $seed -p_gb $p_gb -p_bg $p_bg -b_err $b_err -del $del
+$received = .\channel.ps1 -in $message_enc -errorrate $errorrate -seed $seed -p_gb $p_gb -p_bg $p_bg -b_err $b_err -del $del
 #DECODER
 $decoded = .\SWTC\decode_swtc.ps1 -received $received.transfer -table $table  -table_0 $table_0 -table_1 $table_1 -interleave $interleave
 
