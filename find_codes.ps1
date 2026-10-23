@@ -1,20 +1,20 @@
 ﻿cls
 foreach ($p in 0.01, (3/42), 0.1) {
     foreach ($n in 8, 16, 32, 64, 128, 256) {
-        Write-Host "n = $n, p = $p"
+        Write-Host "n = $n, p = $("{0:g}" -f $p)"
 
         $compare = .\comparison_codes\comparisoncode_setdata.ps1 -codelength $n -p $p
         #Lowerbound
         if ($compare.lowerbound.n -ne $null) {
-            $l = "A($($compare.lowerbound.n),$($compare.lowerbound.d),$($compare.lowerbound.w)), usable Coderate: $($compare.lowerbound.Coderate) "
+            $l = "L($($compare.lowerbound.n),$($compare.lowerbound.d),$($compare.lowerbound.w)), usable Coderate: $($compare.lowerbound.Coderate) "
         } else { $l = "/" }
 
-        Write-Host "Lowerbound: $l"
+        Write-Host "`t`t`t$l"
 
         #KS
         $ks = .\KS\find_best_code_ks.ps1 -p $p -encode $n -z 3
         if ($ks.s1.n -ne 0) {
-            Write-host "KS:`t`t`tA($($ks.s1.n),$($ks.s1.d),$($ks.s1.w)) usable Coderate: $($ks.totalcoderate.toString("0.000")), Score: $($ks.value) "#$($ks.theoreticalcoderate.toString("0.000"))
+            Write-host "KS:`t`t`tL($($ks.s1.n),$($ks.s1.d),$($ks.s1.w)) usable Coderate: $($ks.totalcoderate.toString("0.000")), Score: $($ks.value) "#$($ks.theoreticalcoderate.toString("0.000"))
         }
 
         #SWTC
@@ -24,11 +24,11 @@ foreach ($p in 0.01, (3/42), 0.1) {
         }
             
         #Upperbound
-                if ($compare.upperbound.n -ne $null) {
-            $u = "A($($compare.upperbound.n),$($compare.upperbound.d),$($compare.upperbound.w)), usable Coderate: $($compare.upperbound.Coderate) "
+        if ($compare.upperbound.n -ne $null) {
+            $u = "U($($compare.upperbound.n),$($compare.upperbound.d),$($compare.upperbound.w)), usable Coderate: $($compare.upperbound.Coderate) "
         }  else { $u = "/" }
 
-        Write-Host "Upperbound: $u`n"
+        Write-Host "`t`t`t$u`n"
 
         $l = $null
         $u = $null

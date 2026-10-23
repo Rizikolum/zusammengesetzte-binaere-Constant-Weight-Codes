@@ -1,7 +1,7 @@
 ﻿param (
     [double]$p = 3/43,
     [int] $encode = 96, #96 bit for "Hello World!"
-    [double]$z = 3 # 3 for 99.865% chance of a correct message
+    [double]$z = 3 # for ~99.73% chance of a correct message
 )
 
 

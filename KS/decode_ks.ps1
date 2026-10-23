@@ -101,7 +101,7 @@ function fix {
     return [PSCustomObject]@{candidate = $best_cd; carry = $carry; dist = $best_dist}
 }
 
-#check for deletions by verifying a correct block length, not finished
+#check for deletions by verifying a correct block length, not finished, does nothing if the block length is correct
 if ($received.length % $codelength -ne 0) { 
     $deletions = $codelength - ($received.length % $codelength) 
     Write-Host "KS: at least $deletions deletion(s) detected"
