@@ -1,7 +1,7 @@
 ﻿param (
     [double]$p = 3/43,
     [int] $encode = 96, #96 bit for "Hello World!"
-    [double]$z = 3 # 3 for 99.865% chance of a correct message
+    [double]$z = 3 # 3 for ~99.73% chance of a correct message
 )
 
 #
@@ -79,14 +79,13 @@ for ($c = 0; $c -lt $tables.length; $c++) {
                                     $dcs = 0.02*[Math]::abs($cs1.w-($cs1.n-$cs1.w))
                                     #even higher error correction capability is encouraged but not required
                                     $everr = 0.006*($smaxerror / $t3)
-                                    #any other parameters being equal - a higher distance in the controlword gives us even more security
+                                    #any other parameters being equal - a higher distance in the controlword gives us more security
                                     $evalcwd = 0.001*$ccw.d
 
                                     $cvalue = $evalrate+$dcs+$everr+$evalcwd #current value
 
                                     if($cvalue -gt $bestvalue) {
                                         $bestvalue = $cvalue
-
                                         $bestcw.n = $ccw.n
                                         $bestcw.d = $ccw.d
                                         $bestcw.w = $ccw.w
