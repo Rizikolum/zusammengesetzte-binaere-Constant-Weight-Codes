@@ -83,7 +83,6 @@ function decode_data($block) {
 
     $decode_data_output += "expected controlword: $controlword_code`n" #debug
     $controlword_data = $lookup_table.Where({$_.code -eq $controlword_code }, 'First').'data'
-    
     #controlword error correction if there is no exact match
     if ($controlword_data -eq $null) {
         $decode_data_output += "Controlword $controlword_code broken, Trying to fix`n" #debug
@@ -94,10 +93,10 @@ function decode_data($block) {
             # go through the fixed controlword and try to correct the wrong indices
             if ($controlword_code[$i] -ne $controlword_fixed_code.code[$i]) {
                 #fix the wrong subword(s) that caused  the wrong controlword
-                if ($controlword_fixed_code.code[$i] -eq '1') { 
-                    $array[$i] = $lookup_table_1.Where({$_.code -eq $((find-closest $subwords[$i] $lookup_table_1).code)}, 'First') 
+                if ($controlword_fixed_code.code[$i] -eq '1') {
+                    $array[$i] = $lookup_table_1.Where({$_.code -eq $((find-closest $subwords[$i] $lookup_table_1).code)}, 'First')| Select-Object *
                 } else { 
-                    $array[$i] = $lookup_table_0.Where({$_.code -eq $((find-closest $subwords[$i] $lookup_table_0).code)}, 'First') 
+                    $array[$i] = $lookup_table_0.Where({$_.code -eq $((find-closest $subwords[$i] $lookup_table_0).code)}, 'First')| Select-Object * 
                 }
                 $decode_data_output += "Position: $i $($subwords[$i]) -> $($array[$i].code) => $($array[$i].data)`n"#debug
             }
@@ -144,7 +143,6 @@ function fix {
     $best_dist = [int]::MaxValue
     $best_cd = $null
     $carry = $null
-    #Write-host $missing0 $missing1
     if ($missing0 -lt $missing1) {
         $matchCache0 = @{}
         $candidates0 = recurse_fix_deletion -subword $subword -missing $missing0
@@ -217,13 +215,13 @@ while ($received.length % ($m*$k) -ne 0) {
 }#>
 
 #if multiple codewords arrive at the same time decodes each individually
-$unwrangled = ''
+$disinterleaved = ''
 $tmp = ''
 while ($received.length -ge ($m*$k)) {
     $tmp = $received.substring(0,$m*$k)
     if ($interleave) {
         $tmp = .\disinterleave.ps1 -wi $tmp -k $k
-        $unwrangled += $tmp
+        $disinterleaved += $tmp
     }
     $decode = decode_data $tmp
     $decode_output += $decode.decode_data_output
@@ -235,7 +233,7 @@ while ($received.length -ge ($m*$k)) {
 
 return [PSCustomObject]@{
     binary = $encStr
-    unwrangled = $unwrangled
+    disinterleaved = $disinterleaved
     text = $binaryStr
     fixed = $correctedErrors
     decode_output = $decode_output
