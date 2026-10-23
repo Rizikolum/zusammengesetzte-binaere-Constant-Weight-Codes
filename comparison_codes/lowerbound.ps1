@@ -8,13 +8,18 @@ Add-Type -AssemblyName System.Numerics
 
 $lowerbound = $null
 
-# returns true if a given number is prime
-function primetest {
+function primepowertest {
     param([long]$Number)
     if ($Number -lt 2) { return $false }
-    if ($Number -eq 2) { return $true }
-    if ($Number % 2 -eq 0) { return $false }
-    for ($divisor = 3; $divisor -le ($Number / $divisor); $divisor += 2) { if ($Number % $divisor -eq 0) { return $false } }
+    
+    for ($divisor = 2; $divisor -le ($Number / $divisor); $divisor++) {
+        if ($Number % $divisor -eq 0) {
+            while ($Number % $divisor -eq 0) {
+                $Number = [long]($Number / $divisor)
+            }
+            return ($Number -eq 1)
+        }
+    }
     return $true
 }
 
@@ -42,7 +47,7 @@ $binom = binom $n $w
 if ($ee -ge 2) {
     #find the closest prime q >= n - 1
     [int]$candidate = [Math]::Max(2, $n - 1)
-    while (-not (primetest $candidate)) { $candidate++ }
+    while (-not (primepowertest $candidate)) { $candidate++ }
 
     $q = [System.Numerics.BigInteger]$candidate
     $q1 = $q - 1
@@ -55,8 +60,7 @@ if ($ee -ge 2) {
 ## Theorem 1
 #find the closest prime q >= n
 [int]$candidate = [Math]::Max(2, $n)
-while (-not (primetest $candidate)) { $candidate++ }
-
+while (-not (primepowertest $candidate)) { $candidate++ }
 $q2 = [System.Numerics.BigInteger]$candidate
 $q2e = [System.Numerics.BigInteger]::Pow($q2, $ee+1)-1
 #binom can be reused
