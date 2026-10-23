@@ -35,4 +35,4 @@ return [PSCustomObject]@{
     received = $received
     unwrangled = $transfer
     decoded = $decoded
-} | Format-List
+} #| Format-List
