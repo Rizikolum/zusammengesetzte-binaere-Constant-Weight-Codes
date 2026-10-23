@@ -14,9 +14,7 @@ function primepowertest {
     
     for ($divisor = 2; $divisor -le ($Number / $divisor); $divisor++) {
         if ($Number % $divisor -eq 0) {
-            while ($Number % $divisor -eq 0) {
-                $Number = [long]($Number / $divisor)
-            }
+            while ($Number % $divisor -eq 0) { $Number = [long]($Number / $divisor) }
             return ($Number -eq 1)
         }
     }
@@ -47,8 +45,10 @@ $binom = binom $n $w
 if ($ee -ge 2) {
     #find the closest prime q >= n - 1
     [int]$candidate = [Math]::Max(2, $n - 1)
-    while (-not (primepowertest $candidate)) { $candidate++ }
-
+    while (-not (primepowertest $candidate)) { 
+    $candidate++ 
+    }
+    
     $q = [System.Numerics.BigInteger]$candidate
     $q1 = $q - 1
     $qe11 = [System.Numerics.BigInteger]::Pow($q, $ee+1)-1
