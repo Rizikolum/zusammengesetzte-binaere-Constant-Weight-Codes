@@ -3,6 +3,10 @@
         [int]$ee = 3,
         [int]$w = 0
 )
+$upperbound = $null
+$upperbound_capacity = $null
+$upperbound_redundancy = $null
+
 if ($w -eq 0) { $w = [Math]::ceiling($n/2) }
 Add-Type -AssemblyName System.Numerics
 $d = $ee * 2 + 2
@@ -53,7 +57,6 @@ try{
             $johnsonbound_unrestricted = [System.Numerics.BigInteger]::Divide($dividend,$divisor) * $johnsonbound_unrestricted
         }     
     }
-
     $johnsonbound_unrestricted_capacity = [Math]::Log($johnsonbound_unrestricted,2)
     $johnsonbound_unrestricted_redundancy = $nBig - $johnsonbound_unrestricted_capacity
 } catch { $_ }
@@ -80,13 +83,13 @@ if ($hammingbound) {
     $upperbound_redundancy = $hammingbound_redundancy
 }
     
-if ($johnsonbound_unrestricted -and $johnsonbound_unrestricted -lt $upperbound) {
+if ($johnsonbound_unrestricted -and ($johnsonbound_unrestricted -lt $upperbound -or !$hammingbound)) {
     $upperbound = $johnsonbound_unrestricted
     $upperbound_capacity = $johnsonbound_unrestricted_capacity
     $upperbound_redundancy = $johnsonbound_unrestricted_redundancy
 } 
 
-if ($johnsonbound -and $johnsonbound -lt $upperbound) {
+if ($johnsonbound -and ($johnsonbound -lt $upperbound -or !$upperbound)) {
     $upperbound = $johnsonbound_restricted
     $upperbound_capacity = $johnsonbound_restricted_capacity
     $upperbound_redundancy = $johnsonbound_restricted_redundancy
