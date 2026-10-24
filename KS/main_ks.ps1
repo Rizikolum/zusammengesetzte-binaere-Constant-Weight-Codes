@@ -6,7 +6,7 @@
     [double]$p_bg = 0.2,
     [double]$b_err = 0,
     [double]$del = 0,
-    [string] $table = '.\lookup_tables\lookup_table_A(9,4,6).csv',
+    [string] $table = '.\lookup_tables\lookup_table(9,4,6).csv',
     [boolean] $interleave = $true,
     [PSCustomObject] $encoded = ''
     )
